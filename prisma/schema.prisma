@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Game {
+  id        String @id @default(uuid())
+  name      String
+  bannerUrl String
+
+  ads Ad[]
+}
+
+model Ad {
+  id                String   @id @default(uuid())
+  gameId            String
+  name              String
+  years_playing     Int
+  discord           String
+  week_days         String
+  hour_start        Int
+  hour_end          Int
+  use_voice_channel Boolean  @default(false)
+  created_at        DateTime @default(now())
+
+  game Game @relation(fields: [gameId], references: [id])
+}
